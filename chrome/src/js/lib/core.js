@@ -49,7 +49,6 @@ class Core {
   }
   getHeader (type = 'RPC') {
     const headerOption = []
-    headerOption.push(`User-Agent: ${this.getConfigData('userAgent')}`)
     headerOption.push(`Referer: ${this.getConfigData('referer')}`)
     if (Object.keys(this.cookies).length > 0) {
       headerOption.push(`Cookie: ${this.formatCookies()}`)
@@ -60,6 +59,7 @@ class Core {
         headerOption.push(item)
       })
     }
+    headerOption.push(`User-Agent: ${this.getConfigData('userAgent')}`)
     if (type === 'RPC') {
       return headerOption
     } else if (type === 'aria2Cmd') {
@@ -71,6 +71,7 @@ class Core {
         const headers = item.split(': ')
         return `${headers[0].toLowerCase()}: ${headers[1]}`
       }).join('\r\n')
+      .replace(/user-agent/, 'User-Agent')
     }
   }
   // 解析 RPC地址 返回验证数据 和地址
